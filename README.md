@@ -8,11 +8,20 @@ Para utilizar el script, necesitas proporcionar un token de acceso personal de G
 
 El script se puede ejecutar utilizando el siguiente comando:
 
-`./github_notifier.sh GITHUB_TOKEN`
+```bash
+./github_notifier.sh GITHUB_TOKEN
+```
 
 Reemplaza `GITHUB_TOKEN` con tu token de acceso personal de GitHub.
 
 Si no hay notificaciones sin leer, el script no hará nada.
+
+### Limitar que proyectos seran notificados
+
+Si proporcionas una lista de proyectos desde el segundo argumento, solo se recibiran no tificaciones de dichos proyectos.
+```bash
+./github_notifier.sh GITHUB_TOKEN proyecto1 proyecto2 proyectoN
+```
 
 ## Dependencias
 
