@@ -2,6 +2,8 @@
 
 Este repositorio contiene un script de shell que utiliza la API de GitHub para obtener las notificaciones no leídas de un usuario y las muestra en el escritorio del usuario. El script utiliza notify-send, una biblioteca de notificaciones, para mostrar las notificaciones en el escritorio.
 
+Se guarda un registro de las notificaciones que se han mostrado en el archivo `~/.github-notifier/shown_notifications.log`. Si se ejecuta el script nuevamente, solo se mostrarán las notificaciones que no se hayan mostrado anteriormente.
+
 ## Uso
 
 Para utilizar el script, necesitas proporcionar un token de acceso personal de GitHub. Puedes generar un token de acceso personal en la configuración de tu cuenta de GitHub.
@@ -34,5 +36,5 @@ El script utiliza las siguientes dependencias:
 ### Tareas pendientes:
 
 - [ ] Migrar notify-send a Apprise.
-- [ ] Formatear el texto de la notifcación con más información
-
+- [ ] Migrar a Python para hacerlo compatible con Windows.
+- [x] Formatear el texto de la notifcación con más información.
