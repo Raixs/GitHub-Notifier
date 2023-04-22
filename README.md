@@ -23,6 +23,7 @@ Si no hay notificaciones sin leer, el script no hará nada.
 Si proporcionas una lista de proyectos desde el segundo argumento, solo se recibiran no tificaciones de dichos proyectos.
 ```bash
 ./github_notifier.sh GITHUB_TOKEN proyecto1 proyecto2 proyectoN
+```
 
 ### Configuración de Apprise
 
