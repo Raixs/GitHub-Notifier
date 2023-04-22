@@ -1,5 +1,27 @@
 #!/bin/bash
 
+function show_help {
+    cat << EOF
+Usage: ${0} GITHUB_TOKEN [project1 project2 ...]
+
+This script fetches unread GitHub notifications and displays them as desktop notifications.
+
+Arguments:
+    GITHUB_TOKEN    Your personal GitHub access token.
+    project1        (Optional) A list of projects to filter notifications for. Only notifications for the specified projects will be shown.
+
+Options:
+    -h, --help      Show this help message and exit.
+
+EOF
+}
+
+# Check for help flag
+if [[ "$#" -eq 1 ]] && { [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; }; then
+    show_help
+    exit 0
+fi
+
 GITHUB_TOKEN="${1}"
 
 urls=("${@:2}") # Lista de argumentos desde el segundo argumento
