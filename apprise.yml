@@ -1,0 +1,4 @@
+# apprise.yml
+urls:
+  # Linux
+  - dbus://
