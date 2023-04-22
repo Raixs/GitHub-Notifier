@@ -23,7 +23,13 @@ Si no hay notificaciones sin leer, el script no hará nada.
 Si proporcionas una lista de proyectos desde el segundo argumento, solo se recibiran no tificaciones de dichos proyectos.
 ```bash
 ./github_notifier.sh GITHUB_TOKEN proyecto1 proyecto2 proyectoN
-```
+
+### Configuración de Apprise
+
+
+El script utiliza Apprise para enviar las notificaciones a los serviciones que se deseen. Para configurar Apprise, se debe editar el archivo `~/.github-notifier/apprise.yml` y agregar las configuraciones de los servicios que se deseen. Para más información sobre Apprise, visita [su página web](https://github.com/caronc/apprise)
+
+Se incluyen ejemplos comentados en el archivo `apprise.yml` para los servicios más populares.
 
 ## Dependencias
 
@@ -32,9 +38,11 @@ El script utiliza las siguientes dependencias:
 -   `curl`
 -   `jq`
 -   `notify-send`
+-   `apprise`
+-   `python3`
 
 ### Tareas pendientes:
 
-- [ ] Migrar notify-send a Apprise.
-- [ ] Migrar a Python para hacerlo compatible con Windows.
+- [x] Migrar notify-send a Apprise.
+- [x] Migrar a Python para hacerlo compatible con Windows.
 - [x] Formatear el texto de la notifcación con más información.
