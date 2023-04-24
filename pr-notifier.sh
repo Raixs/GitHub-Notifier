@@ -1,4 +1,27 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+#set -o errexit   # abort on nonzero exitstatus
+set -o nounset   # abort on undeclared variable
+set -o pipefail  # don't hide errors within pipes
+# set -o xtrace  # track what is running - debugging
+
+# Set magic variables for current file & dir
+__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)" # <-- get path of the script --> FULLPATH ./
+__file="${__dir}/$(basename "${BASH_SOURCE[0]}")" # <-- get full path name of the script --> FULLPATH/FULLNAME
+__base="$(basename "${__file}" .sh)" # <-- get name of the script --> NAME (Whitout extension)
+__root="$(cd "$(dirname "${__dir}")" && pwd)" # <-- get root path of the script --> FULLPATH ../
+
+#### BLOQUE DE CÓDIGO PARA EJECUTAR EL SCRIPT DESDE CRON ####
+
+# Use the correct DISPLAY variable
+# export DISPLAY=:0
+# current_user=$(whoami)
+# echo "Current user is: ${current_user}"
+# export XAUTHORITY="/home/${current_user}/.Xauthority"
+# echo "XAUTHORITY is set to: ${XAUTHORITY}"
+
+# Obtener la dirección del bus de sesión D-Bus desde cron
+export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus"
 
 function show_help {
     cat << EOF
@@ -27,7 +50,7 @@ GITHUB_TOKEN="${1}"
 urls=("${@:2}") # Lista de argumentos desde el segundo argumento
 
 # Archivo para llevar registro de notificaciones mostradas
-shown_notifications_file="shown_notifications.log"
+shown_notifications_file="${__dir}/shown_notifications.log"
 
 # Obtener las notificaciones
 notifications=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com/notifications)
@@ -57,10 +80,13 @@ function notify {
     notify-send -a "Github Notifier" "$1" "$2" --urgency "critical" #-i "$3"
 }
 
+echo "notify function is defined"
+
 # Recorrer el .json de las notificaciones y sacar notificaciones
 echo "${notifications}" | jq -r '.id, .title, .url, .repository' | while read -r id; read -r title; read -r url; read -r repository; do
     # Verificar si la notificación ya ha sido mostrada
     if ! grep -q "${id}" "${shown_notifications_file}"; then
+    echo "Sending notification for ID ${id}"
         # Si no ha sido mostrada, mostrarla y agregarla al archivo de registro
         # usando la URL de la notificación, obtener el html_url de la página y otros detalles usando la API de github
         details=$(curl -L -H "Authorization: Bearer ${GITHUB_TOKEN}" -H "X-GitHub-Api-Version: 2022-11-28" "${url}" | jq -r '{html_url: .html_url, author: (.user.login // .sender.login), pull_request: .pull_request}')
