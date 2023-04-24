@@ -1,4 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+#set -o errexit   # abort on nonzero exitstatus
+set -o nounset   # abort on undeclared variable
+set -o pipefail  # don't hide errors within pipes
+# set -o xtrace  # track what is running - debugging
+
+# Set magic variables for current file & dir
+__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)" # <-- get path of the script --> FULLPATH ./
+__file="${__dir}/$(basename "${BASH_SOURCE[0]}")" # <-- get full path name of the script --> FULLPATH/FULLNAME
+__base="$(basename "${__file}" .sh)" # <-- get name of the script --> NAME (Whitout extension)
+__root="$(cd "$(dirname "${__dir}")" && pwd)" # <-- get root path of the script --> FULLPATH ../
 
 function show_help {
     cat << EOF
@@ -27,7 +38,7 @@ GITHUB_TOKEN="${1}"
 urls=("${@:2}") # Lista de argumentos desde el segundo argumento
 
 # Archivo para llevar registro de notificaciones mostradas
-shown_notifications_file="shown_notifications.log"
+shown_notifications_file="${__dir}/shown_notifications.log"
 
 # Obtener las notificaciones
 notifications=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com/notifications)
